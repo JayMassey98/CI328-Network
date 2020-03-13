@@ -19,11 +19,27 @@ Game.create = function(){
     var moveLeft = game.input.keyboard.addKey(Phaser.Keyboard.A);
     var moveDown = game.input.keyboard.addKey(Phaser.Keyboard.S);
     var moveRight = game.input.keyboard.addKey(Phaser.Keyboard.D);
+
+    moveUp.onHoldCallback = function() {
+        Client.sendPressUp();
+    };
     
-    moveUp.onDown.add(Client.sendPressUp, this);
-    moveLeft.onDown.add(Client.sendPressLeft, this);
-    moveDown.onDown.add(Client.sendPressDown, this);
-    moveRight.onDown.add(Client.sendPressRight, this);
+    moveLeft.onHoldCallback = function() {
+        Client.sendPressLeft();
+    };
+    
+    moveDown.onHoldCallback = function() {
+        Client.sendPressDown();
+    };
+    
+    moveRight.onHoldCallback = function() {
+        Client.sendPressRight();
+    };
+    
+    //
+    //moveLeft.onHoldCallback.add(Client.sendPressLeft, this);
+    //moveDown.onHoldCallback.add(Client.sendPressDown, this);
+    //moveRight.onHoldCallback.add(Client.sendPressRight, this);
     
 //    game.input.onTap.add(Game.getCoordinates, this);
     
