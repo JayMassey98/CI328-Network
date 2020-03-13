@@ -18,34 +18,27 @@ io.on('connection', function(client) {
         client.emit('allplayers',getAllPlayers());
         client.broadcast.emit('newplayer',client.player);
         
-        client.on('buttonpress',function() {
-            console.log('buttonpress received, function executed');
-            client.player.x += 10;
-            client.player.y += 0;
-            io.emit('move',client.player);
-        });
-        
         client.on('pressup',function() {
             console.log('w pressed');
-            client.player.y -= 10;
+            client.player.y -= 4;
             io.emit('move',client.player);
         });
         
         client.on('pressleft',function() {
             console.log('a pressed');
-            client.player.x -= 10;
+            client.player.x -= 4;
             io.emit('move',client.player);
         });
         
         client.on('pressdown',function() {
             console.log('s pressed');
-            client.player.y += 10;
+            client.player.y += 4;
             io.emit('move',client.player);
         });
         
         client.on('pressright',function() {
             console.log('d pressed');
-            client.player.x += 10;
+            client.player.x += 4;
             io.emit('move',client.player);
         });
 
