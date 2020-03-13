@@ -10,8 +10,38 @@ Client.askNewPlayer = function(){
     Client.socket.emit('newplayer');
 };
 
-Client.sendClick = function(x,y){
-  Client.socket.emit('click',{x:x,y:y});
+//Client.sendClick = function(x,y){
+//  Client.socket.emit('click',{x:x,y:y});
+//};
+
+Client.sendButtonPress = function(){
+    console.log("button pressed");
+    Client.socket.emit('buttonpress');
+};
+
+Client.sendPressUp = function(){
+    console.log("w pressed");
+    Client.socket.emit('pressup');
+};
+
+Client.sendPressLeft = function(){
+    console.log("a pressed");
+    Client.socket.emit('pressleft');
+};
+
+Client.sendPressDown = function(){
+    console.log("s pressed");
+    Client.socket.emit('pressdown');
+};
+
+Client.sendPressRight = function(){
+    console.log("d pressed");
+    Client.socket.emit('pressright');
+};
+
+Client.sendMovement = function(){
+    console.log("movement sent");
+    Client.socket.emit('move');
 };
 
 Client.socket.on('newplayer',function(data){
