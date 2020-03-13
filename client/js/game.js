@@ -10,16 +10,28 @@ Game.preload = function() {
 
 Game.create = function(){
     Game.playerMap = {};
+    
     var testKey = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
+    
     testKey.onDown.add(Client.sendTest, this);
     
-    game.input.onTap.add(Game.getCoordinates, this);
+    var moveUp = game.input.keyboard.addKey(Phaser.Keyboard.W);
+    var moveLeft = game.input.keyboard.addKey(Phaser.Keyboard.A);
+    var moveDown = game.input.keyboard.addKey(Phaser.Keyboard.S);
+    var moveRight = game.input.keyboard.addKey(Phaser.Keyboard.D);
+    
+    moveUp.onDown.add(Client.sendPressUp, this);
+    moveLeft.onDown.add(Client.sendPressLeft, this);
+    moveDown.onDown.add(Client.sendPressDown, this);
+    moveRight.onDown.add(Client.sendPressRight, this);
+    
+//    game.input.onTap.add(Game.getCoordinates, this);
     
     Client.askNewPlayer();
 };
 
-Game.getCoordinates = function(pointer){
-    Client.sendClick(pointer.worldX,pointer.worldY);
+Game.getCoordinates = function(){
+    Client.sendButtonPress();
 };
 
 Game.addNewPlayer = function(id,x,y){
@@ -27,13 +39,33 @@ Game.addNewPlayer = function(id,x,y){
 };
 
 Game.movePlayer = function(id,x,y){
+    
     var player = Game.playerMap[id];
-    var distance = Phaser.Math.distance(player.x,player.y,x,y);
-    var tween = game.add.tween(player);
-    var duration = distance*10;
-    tween.to({x:x,y:y}, duration);
-    tween.start();
-};
+    
+    player.x = x;
+    player.y = y;
+    
+//    var distance = Phaser.Math.distance(player.x,player.y,x,y);
+
+//    var tween = game.add.tween(player);
+//    var duration = distance*4.5;
+//    tween.to({x:x,y:y}, duration);
+//    tween.start();
+    
+}
+
+
+
+//Game.movePlayer = function(id,x,y){
+//    var player = Game.playerMap[id];
+//    var distance = Phaser.Math.distance(player.x,player.y,x,y);
+//    var tween = game.add.tween(player);
+//    var duration = distance*4.5;
+//    tween.to({x:x,y:y}, duration);
+//    tween.start();
+//};
+
+
 
 Game.removePlayer = function(id){
     Game.playerMap[id].destroy();
