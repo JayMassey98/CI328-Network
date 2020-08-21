@@ -50,7 +50,8 @@ io.on('connection', function(client) {
             size: 1,
             speed: 4,
             playerScore: 0,
-            bestScore: 0
+            bestScore: 0,
+            bestScoreId: 0
             
         };
         
@@ -77,37 +78,40 @@ io.on('connection', function(client) {
                                 
                                 // Update the dot to a new location
                                 
-                                io.emit('removedot', client.dot);
-                                
                                 client.dot = {
-                                   
+
                                     id: existingDotsID[i],
                                     x: existingDotsX[i],
                                     y: existingDotsY[i]
-                                    
+
                                 }
+                                
+                                io.emit('removedot', client.dot);
                                 
                                 existingDotsX[i] = randomInt(64, 1280 - 64),
                                 existingDotsY[i] = randomInt(64, 720 - 64),
                                     
                                 client.dot = {
                                    
-                                    id: existingDotsID[i],
+                                    id: client.dot.id,
                                     x: existingDotsX[i],
                                     y: existingDotsY[i]
                                     
                                 }
                                 
-                                io.emit('loaddot', client.dot);
+                                io.emit('movedot', client.dot);
+                                
+                                console.log(client.dot.id);
                                 
                                 playerList = getAllPlayers();
                                 var bestScore = client.player.bestScore;
                                 
                                 for (var i = 0; i < playersOnline; i++) {
                 
-                                    if (playerList[i].playerScore + 1 >= bestScore) {
+                                    if (playerList[i].playerScore + 1 > bestScore) {
                     
-                                        bestScore = playerList[i].playerScore + 1;
+                                        bestScore = playerList[i].playerScore;
+                                        bestScoreId = playerList[i].id;
                                     }
                                 }
                                 
@@ -119,7 +123,8 @@ io.on('connection', function(client) {
                                     size: client.player.size + 0.1,
                                     speed: client.player.speed * 0.99,
                                     playerScore: client.player.playerScore + 1,
-                                    bestScore: bestScore
+                                    bestScore: bestScore,
+                                    bestScoreId: bestScoreId
                                     
                                 }
                                 
