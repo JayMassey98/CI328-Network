@@ -71,19 +71,19 @@ var dotsOnScreen = 0;
         });
 
         Client.socket.on('changesize',function(data){
-            Game.changeSizePlayer(data.id,data.x,data.y,data.size,data.playerScore,data.bestScore);
+            Game.changeSizePlayer(data.id,data.x,data.y,data.size,data.playerScore,data.bestScore,data.bestScoreId);
         });
 
         Client.socket.on('remove',function(id){
             Game.removePlayer(id);
         });
         
-        Client.socket.on('loaddot',function(data){
-            Game.loadDot(data.id,data.x,data.y);
+        Client.socket.on('movedot',function(data){
+            Game.moveDot(data.id,data.x,data.y);
         });
         
         Client.socket.on('removedot',function(data){
-            Game.removeDot(data.id, data.x, data.y);
+            Game.removeDot(data.id);
         });
         
     });
