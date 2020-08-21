@@ -102,8 +102,8 @@ Game.addNewPlayer = function(id, x, y) {
     }
     
     Game.playerMap[id] = game.add.sprite(x - 16, y - 16, sprite);
-    Game.playerScore = game.add.text(110, 20, "YOUR SCORE:");
-    Game.bestScore = game.add.text(Game.screenWidth - 325, 20, "BEST SCORE:");
+    Game.bestScore = game.add.text(110, 20, "BEST SCORE:");
+    Game.bestScoreId = game.add.text(Game.screenWidth - 320, 20, "BEST PLAYER:");
     
 };
 
@@ -115,22 +115,29 @@ Game.loadDot = function(id, x, y) {
     
 };
 
-Game.removeDot = function(id, x, y) {
+Game.moveDot = function(id, x, y) {
     
-    Game.dotMap[id].scale.setTo(0, 0);
-    
+    Game.dotMap[id].x = x;
+    Game.dotMap[id].y = y;
+    Game.dotMap[id] = game.add.sprite(x, y, 'dot');
 };
 
-Game.changeSizePlayer = function(id, x, y, size, playerScore, bestScore) {
+Game.removeDot = function(id) {
+    
+    Game.dotMap[id].scale.setTo(0, 0);
+};
+
+Game.changeSizePlayer = function(id, x, y, size, playerScore, bestScore, bestScoreId) {
     
     Game.playerMap[id].x = x - (16 * size);
     Game.playerMap[id].y = y - (16 * size);
     Game.playerMap[id].bestScore = bestScore;
+    Game.playerMap[id].bestScoreId = bestScoreId;
     Game.playerMap[id].scale.setTo(size, size);
-    Game.playerScore.destroy();
     Game.bestScore.destroy();
-    Game.playerScore = game.add.text(110, 20, "YOUR SCORE: " + playerScore);
-    Game.bestScore = game.add.text(Game.screenWidth - 325, 20, "BEST SCORE: " + bestScore);
+    Game.bestScoreId.destroy();
+    Game.bestScore = game.add.text(110, 20, "BEST SCORE: " + bestScore);
+    Game.bestScoreId = game.add.text(Game.screenWidth - 320, 20, "BEST PLAYER: " + bestScoreId);
     
 };
 
