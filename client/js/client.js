@@ -1,65 +1,89 @@
+// Initialisation
+
 var Client = {};
 Client.socket = io('http://localhost:55000');
 
-Client.sendTest = function(){
-    console.log("test sent");
-    Client.socket.emit('test');
-};
+var dotsOnScreen = 0;
 
-Client.askNewPlayer = function(){
-    Client.socket.emit('newplayer');
-};
+// Joining Player
 
-//Client.sendClick = function(x,y){
-//  Client.socket.emit('click',{x:x,y:y});
-//};
+    Client.askNewPlayer = function(data){
+        
+        Client.socket.emit('newplayer');
+    };
 
-Client.sendButtonPress = function(){
-    console.log("button pressed");
-    Client.socket.emit('buttonpress');
-};
+// WASD Movement
 
-Client.sendPressUp = function(){
-    console.log("w pressed");
-    Client.socket.emit('pressup');
-};
+    Client.sendPressUp = function(){
+        Client.socket.emit('pressup');
+    };
 
-Client.sendPressLeft = function(){
-    console.log("a pressed");
-    Client.socket.emit('pressleft');
-};
+    Client.sendPressRight = function(){
+        Client.socket.emit('pressright');
+    };
 
-Client.sendPressDown = function(){
-    console.log("s pressed");
-    Client.socket.emit('pressdown');
-};
+    Client.sendPressDown = function(){
+        Client.socket.emit('pressdown');
+    };
 
-Client.sendPressRight = function(){
-    console.log("d pressed");
-    Client.socket.emit('pressright');
-};
+    Client.sendPressLeft = function(){
+        Client.socket.emit('pressleft');
+    };
 
-Client.sendMovement = function(){
-    console.log("movement sent");
-    Client.socket.emit('move');
-};
+    Client.checkPlayerPos = function(){
+        Client.socket.emit('playerpos');
+    };
 
-Client.socket.on('newplayer',function(data){
-    Game.addNewPlayer(data.id,data.x,data.y);
-});
+// Edible Dots
 
-Client.socket.on('allplayers',function(data){
-    for(var i = 0; i < data.length; i++){
-        Game.addNewPlayer(data[i].id,data[i].x,data[i].y);
-    }
+    Client.sendExistingDots = function(){
+        Client.socket.emit('existingdots');
+    };
 
-    Client.socket.on('move',function(data){
-        Game.movePlayer(data.id,data.x,data.y);
+// Player Size
+
+    Client.sendGetBigger = function(){
+        Client.socket.emit('getbigger');
+    };
+
+    Client.sendResetSize = function(){
+        Client.socket.emit('resetsize');
+    };
+
+// New Players and Dots
+
+    Client.socket.on('newplayer',function(data){
+        Game.addNewPlayer(data.id,data.x,data.y);
     });
 
-    Client.socket.on('remove',function(id){
-        Game.removePlayer(id);
+    Client.socket.on('loaddot',function(data){
+        Game.loadDot(data.id,data.x,data.y);
     });
-});
 
+    Client.socket.on('allplayers',function(data){
+        
+        for(var i = 0; i < data.length; i++){
+            Game.addNewPlayer(data[i].id,data[i].x,data[i].y,data[i].size);
+        }
 
+        Client.socket.on('move',function(data){
+            Game.movePlayer(data.id,data.x,data.y,data.size);
+        });
+
+        Client.socket.on('changesize',function(data){
+            Game.changeSizePlayer(data.id,data.x,data.y,data.size,data.playerScore,data.bestScore);
+        });
+
+        Client.socket.on('remove',function(id){
+            Game.removePlayer(id);
+        });
+        
+        Client.socket.on('loaddot',function(data){
+            Game.loadDot(data.id,data.x,data.y);
+        });
+        
+        Client.socket.on('removedot',function(data){
+            Game.removeDot(data.id, data.x, data.y);
+        });
+        
+    });
